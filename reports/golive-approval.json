@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-10-14T02:40:38.920Z",
+  "lab": "minilab-golive-approval-ship",
+  "keyless": true,
+  "never_deploys": true,
+  "ok": true,
+  "elapsed_ms": 11502,
+  "elapsed_s": 11.5,
+  "bun": {
+    "version": "1.4.2",
+    "pass": 5,
+    "fail": 0
+  },
+  "skills": {
+    "ok": true,
+    "exit_code": 0,
+    "elapsed_ms": 64
+  },
+  "mirrors": {
+    "ok": true,
+    "forbidden": [
+      ".cursor/skills",
+      ".agents/skills"
+    ]
+  },
+  "upstream": {
+    "repo": "mikehasa/golive-skill",
+    "pin_sha": "8fd3d8e96844c79c500aabaf215d1267fcde08c5",
+    "pin_short": "8fd3d8e9",
+    "expected_pin": "8fd3d8e96844c79c500aabaf215d1267fcde08c5",
+    "pin_match": true,
+    "npm": "golive@0.1.0-alpha.9",
+    "bundle_digest": "e7bc6549ea6f2f8c95728d6e5611159c876a1f38d6db0009f7aa053f12f7133b",
+    "vendor_present": true
+  },
+  "steps": [
+    {
+      "id": "bun:test",
+      "command": "bun test ./test",
+      "ok": true,
+      "exit_code": 0,
+      "elapsed_ms": 11438
+    },
+    {
+      "id": "check:skills",
+      "command": "bun run check:skills",
+      "ok": true,
+      "exit_code": 0,
+      "elapsed_ms": 64
+    }
+  ],
+  "headline": {
+    "bun_pass": 5,
+    "bun_fail": 0,
+    "skills_ok": true,
+    "mirrors_ok": true,
+    "pin_short": "8fd3d8e9"
+  }
+}

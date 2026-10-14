@@ -1,0 +1,4 @@
+title = "minilab-golive-approval-ship"
+
+[extend]
+useDefault = true

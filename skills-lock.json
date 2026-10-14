@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "golive": {
+      "source": "./vendor/golive-skill/skills/golive",
+      "sourceType": "local",
+      "computedHash": "6dea33c1334ceb107ae7fabdd8b6e27cf0eeb5cb5fca42bc4c95e4ec904846bb"
+    }
+  }
+}

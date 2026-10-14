@@ -1,0 +1,30 @@
+{
+  "name": "@skilleddragon/minilab-golive-approval-ship",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SkilledDragon minilab: GoLive ship-with-approval refuses without --yes; keyless CI never deploys",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.0.0",
+    "bun": ">=1.2.0"
+  },
+  "scripts": {
+    "test": "bun test ./test",
+    "typecheck": "tsc --noEmit",
+    "check:skills": "bun run scripts/check-skills-frontmatter.ts",
+    "report": "bun run scripts/report.ts",
+    "vendor": "bash scripts/fetch-upstream.sh",
+    "upstream:ci": "bash scripts/upstream-ci.sh",
+    "upstream:runtime": "bash scripts/run-upstream-runtime-smoke.sh",
+    "audit": "bun audit",
+    "hooks:install": "bash scripts/install-githooks.sh"
+  },
+  "dependencies": {
+    "golive": "0.1.0-alpha.9"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.3",
+    "typescript": "5.9.3"
+  }
+}
