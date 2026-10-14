@@ -1,3 +1,8 @@
 [test]
 # Keep discovery inside this lab — never pick up vendor/ suites.
 root = "./test"
+
+[install]
+# GoLive release integrity requires nlink===1 (readRegular). Bun's default
+# hardlink/clonefile backends on Linux leave nlink>1 and the CLI refuses to run.
+backend = "copyfile"

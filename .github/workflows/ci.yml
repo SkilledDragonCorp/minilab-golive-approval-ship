@@ -38,7 +38,8 @@ jobs:
           node -p "process.release.name + ' ' + process.versions.node"
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        # copyfile backend: golive refuses hardlinked skill files (nlink!==1)
+        run: bun install --frozen-lockfile --backend=copyfile
 
       - name: Typecheck
         run: bun run typecheck
