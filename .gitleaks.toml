@@ -2,3 +2,9 @@ title = "minilab-golive-approval-ship"
 
 [extend]
 useDefault = true
+
+# Upstream golive release.json maps file paths → content SHA-256 digests.
+# The sentry.md digest trips the sentry-access-token rule (filename + hex entropy).
+[[allowlists]]
+description = "Upstream golive release manifest file digests (not live tokens)"
+paths = ['''^\.claude/skills/golive/release\.json$''']
