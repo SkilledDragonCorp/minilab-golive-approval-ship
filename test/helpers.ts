@@ -17,18 +17,55 @@ export type GoliveResult = {
   json: Record<string, unknown> | null;
 };
 
-/** Run pinned npm golive CLI via Node with env { PATH, HOME } only. */
+/**
+ * Resolve a real Node binary (not Bun-as-node). GoLive's release integrity check
+ * requires process.execPath to be Node when it re-spawns the bundled CLI.
+ */
+export function resolveNodeBinary(): string {
+  const candidates = [
+    process.env.NODE_BINARY,
+    Bun.which("node"),
+    "/usr/local/bin/node",
+    "/usr/bin/node",
+  ].filter((x): x is string => typeof x === "string" && x.length > 0);
+
+  for (const bin of candidates) {
+    const probe = Bun.spawnSync(
+      [bin, "-p", "JSON.stringify({ name: process.release?.name, bun: typeof Bun !== 'undefined' })"],
+      { stdout: "pipe", stderr: "pipe", env: { PATH: process.env.PATH ?? "" } },
+    );
+    if (probe.exitCode !== 0) continue;
+    try {
+      const info = JSON.parse((probe.stdout?.toString() ?? "").trim()) as {
+        name?: string;
+        bun?: boolean;
+      };
+      if (info.name === "node" && info.bun !== true) return bin;
+    } catch {
+      // try next
+    }
+  }
+  throw new Error(
+    "Could not resolve a real Node binary (got Bun-as-node or missing node). Set NODE_BINARY.",
+  );
+}
+
+const NODE_BIN = resolveNodeBinary();
+
+/** Run pinned npm golive CLI via Node with env { PATH, HOME, TMPDIR } only. */
 export function runGolive(
   args: string[],
   opts: { cwd: string; home: string },
 ): GoliveResult {
-  const r = Bun.spawnSync(["node", GOLIVE_BIN, ...args], {
+  const r = Bun.spawnSync([NODE_BIN, GOLIVE_BIN, ...args], {
     cwd: opts.cwd,
     stdout: "pipe",
     stderr: "pipe",
     env: {
       PATH: process.env.PATH ?? "",
       HOME: opts.home,
+      TMPDIR: process.env.TMPDIR ?? tmpdir(),
+      LANG: process.env.LANG ?? "C.UTF-8",
     },
   });
   const stdout = r.stdout?.toString() ?? "";
@@ -38,7 +75,6 @@ export function runGolive(
   try {
     json = JSON.parse(text) as Record<string, unknown>;
   } catch {
-    // non-JSON or mixed output
     const start = text.indexOf("{");
     if (start >= 0) {
       try {

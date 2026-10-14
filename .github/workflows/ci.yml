@@ -32,6 +32,11 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Pin real Node for golive child (not Bun-as-node)
+        run: |
+          echo "NODE_BINARY=$(command -v node)" >> "$GITHUB_ENV"
+          node -p "process.release.name + ' ' + process.versions.node"
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
@@ -43,6 +48,8 @@ jobs:
 
       - name: Unit tests (never deploys)
         run: bun test
+        env:
+          NODE_BINARY: ${{ env.NODE_BINARY }}
 
       - name: Keyless report
         run: bun run report
@@ -124,7 +131,7 @@ jobs:
           chmod +x osv-scanner
 
       - name: osv-scanner on upstream pnpm-lock.yaml
-        run: ./osv-scanner scan --lockfile vendor/golive-skill/pnpm-lock.yaml
+        run: ./osv-scanner scan --config osv-scanner.toml --lockfile vendor/golive-skill/pnpm-lock.yaml
 
       - name: Setup Bun (skill checks)
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0

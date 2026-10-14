@@ -1,0 +1,6 @@
+# Upstream pin mikehasa/golive-skill@8fd3d8e — transitive source-map-js@1.2.1
+# (GHSA-68fv-2mgg-jv7q). Lab does not vendor or patch upstream lockfiles; ignore
+# until the pin upgrades. Re-evaluate when bumping the upstream SHA.
+[[IgnoredVulns]]
+id = "GHSA-68fv-2mgg-jv7q"
+reason = "Transitive in pinned upstream golive-skill pnpm-lock; not introduced by this lab"
